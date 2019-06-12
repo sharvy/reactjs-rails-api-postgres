@@ -1,24 +1,9 @@
-# README
+# ReactJS Listing app with Ruby on Rails api and Postgresql Database.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Pull the repo, run:
+```
+rake db:create db:migrate db:seed
+gem install foreman
+foreman -f Procfile.dev
+```
+Open http://localhost:3000 in browser
