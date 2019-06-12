@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import axios from "axios";
 import List from "./List";
 import NewListForm from "./NewListForm";
+import EditListForm from "./EditListForm";
 
 class ListContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lists: []
+      lists: [],
+      editingListId: null
     };
   }
 
@@ -42,13 +44,48 @@ class ListContainer extends Component {
       .catch(error => console.log(error));
   };
 
+  editList = (id, title, excerpt) => {
+    axios
+      .put(`/api/v1/lists/${id}`, { list: { title, excerpt } })
+      .then(response => {
+        console.log(response);
+        let lists = this.state.lists;
+        lists = lists.map(list => (list.id === id ? response.data : list));
+        this.setState({ lists, editingListId: null });
+      })
+      .catch(error => console.log(error));
+  };
+
+  startEditing = id => {
+    this.setState({ editingListId: id });
+  };
+
   render() {
     return (
-      <div className="List-container">
-        {this.state.lists.map(list => {
-          return <List list={list} key={list.id} onRemoveList={this.removeList} />;
-        })}
-        <NewListForm onNewList={this.addNewList} />
+      <div className="container">
+        <div className="row">
+          {this.state.lists.map(list => {
+            if (this.state.editingListId === list.id) {
+              return (
+                <EditListForm
+                  list={list}
+                  key={list.id}
+                  editList={this.editList}
+                />
+              );
+            } else {
+              return (
+                <List
+                  list={list}
+                  key={list.id}
+                  onRemoveList={this.removeList}
+                  onStartEditing={this.startEditing}
+                />
+              );
+            }
+          })}
+          <NewListForm onNewList={this.addNewList} />
+        </div>
       </div>
     );
   }

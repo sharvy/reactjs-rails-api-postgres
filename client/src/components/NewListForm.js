@@ -11,20 +11,24 @@ const NewListForm = ({ onNewList = f => f }) => {
   };
 
   return (
-    <form onSubmit={submit}>
+    <form className="card col-md-4" onSubmit={submit}>
       <input
+        className="form-control"
         ref={input => (title = input)}
         type="text"
         placeholder="Title..."
         required
       />
-      <input 
+      <input
+        className="form-control"
         ref={input => (excerpt = input)}
         type="text"
         placeholder="Excerpt..."
         required
       />
-      <button>Add List</button>
+      <button type="submit" className="btn btn-primary">
+        Add List
+      </button>
     </form>
   );
 };
