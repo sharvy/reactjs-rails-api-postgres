@@ -32,11 +32,21 @@ class ListContainer extends Component {
       .catch(error => console.log(error));
   };
 
+  removeList = id => {
+    axios
+      .delete(`/api/v1/lists/${id}`)
+      .then(response => {
+        const lists = this.state.lists.filter(list => list.id !== id);
+        this.setState({ lists });
+      })
+      .catch(error => console.log(error));
+  };
+
   render() {
     return (
       <div className="List-container">
         {this.state.lists.map(list => {
-          return <List list={list} key={list.id} />;
+          return <List list={list} key={list.id} onRemoveList={this.removeList} />;
         })}
         <NewListForm onNewList={this.addNewList} />
       </div>
